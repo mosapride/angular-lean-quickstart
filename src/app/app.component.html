@@ -1,11 +1,62 @@
-<h1>{{title}}</h1>
+<h2>外国人が選んだ、最強の日本アニメヒーローベスト15</h2>
+<!-- http://karapaia.com/archives/52205034.html -->
 
-<h2>{{hero.name}} 詳細!</h2>
-<div>
-  <label>id: </label>
-  {{hero.id}}
-</div>
-<div>
-  <label>name: </label>
-  <input [(ngModel)]="hero.name" placeholder="name">
+<ul class="heroes">
+  <li *ngFor="let hero of heros" [class.dummy]="hero === selectedHero" [class.selected]="hero === selectedHero" (click)="onSelect(hero)">
+    <span class="badge">{{hero.id}}</span> {{hero.name}}
+  </li>
+</ul>
+<!--
+  [class.dummy]と[class.selected]について
+  [class.class-name]はtrueのときにclass-nameがclassとして採用される
+  つまりhero === selectedHeroがtrueの時、class="selected"と反映される
+  詳細:https://angular.io/docs/ts/latest/guide/template-syntax.html#!#class-binding
+  -->
+
+
+<p [class]="hoge1" [class]="hoge2">
+  ここのエリアはhoge2変数でcsssのクラス{{hoge2}}を定義している
+</p>
+
+hoge2変数でcssバインド:<input [(ngModel)]="hoge2" placeholder="selected" />←cssでクラスで定義されているクラス名を入力すれば色が変わる（例：selected)
+<!--
+  [class]="hoge1"、[class]="hoge2"について
+  [class]="バインド変数名"で動的にclassを変更することも可能
+  複数[class]を宣言しても採用されるのは最後に宣言したもののみだった。この場合、[class]="hoge2"のみ有効
+ -->
+
+
+
+<!-- ngIfが無いとselectedHero.nameプロパティが存在せずにエラーになる
+     クリックしていない→selectedHeroの内容が未確定が原因
+     エラーログからはAppComponent.html:5...と出るが、どの変数かまたは何行目かまでは分からない
+-->
+<!-- ngIfが無い時のエラーログ
+AppComponent.html:5 ERROR TypeError: Cannot read property 'name' of undefined
+    at Object.View_AppComponent_0.co [as updateDirectives] (ng:///AppModule/AppComponent.ngfactory.js:247:37)
+    at Object.debugUpdateDirectives [as updateDirectives] (http://localhost:4200/vendor.bundle.js:13529:21)
+    at checkAndUpdateView (http://localhost:4200/vendor.bundle.js:12941:14)
+    at callViewAction (http://localhost:4200/vendor.bundle.js:13256:17)
+    at execComponentViewsAction (http://localhost:4200/vendor.bundle.js:13202:13)
+    at checkAndUpdateView (http://localhost:4200/vendor.bundle.js:12947:5)
+    at callWithDebugContext (http://localhost:4200/vendor.bundle.js:13929:42)
+    at Object.debugCheckAndUpdateView [as checkAndUpdateView] (http://localhost:4200/vendor.bundle.js:13469:12)
+    at ViewRef_.detectChanges (http://localhost:4200/vendor.bundle.js:11038:63)
+    at http://localhost:4200/vendor.bundle.js:5968:63
+    at Array.forEach (native)
+    at ApplicationRef_.tick (http://localhost:4200/vendor.bundle.js:5968:25)
+    at ApplicationRef_._loadComponent (http://localhost:4200/vendor.bundle.js:5944:14)
+    at ApplicationRef_.bootstrap (http://localhost:4200/vendor.bundle.js:5932:14)
+    at http://localhost:4200/vendor.bundle.js:5712:79
+View_AppComponent_0 @ AppComponent.html:5
+
+これ以降はzone.js周りが道連れでエラーを吐いているが一番はじめにでるエラーだけ見て判断出来るかもしれない
+ -->
+<div *ngIf="selectedHero">
+  <h2>{{selectedHero.name}} 詳細!</h2>
+  <div><label>id: </label>{{selectedHero.id}}</div>
+  <div>
+    <label>name: </label>
+    <input [(ngModel)]="selectedHero.name" placeholder="name" />
+  </div>
 </div>
