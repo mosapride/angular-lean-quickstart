@@ -2,8 +2,12 @@
 <!-- http://karapaia.com/archives/52205034.html -->
 
 <ul class="heroes">
-  <li *ngFor="let hero of heros" [class.dummy]="hero === selectedHero" [class.selected]="hero === selectedHero" (click)="onSelect(hero)">
-    <span class="badge">{{hero.id}}</span> {{hero.name}}
+  <li *ngFor="let hero of heros ; let i = index ; let f = first ; let l = last ; let e = even ; let o = odd "
+  [class.myRed]="hero === selectedHero"
+  [class.selected]="hero === selectedHero"
+  [class.stylecss-oblique]="hero === selectedHero"
+  (click)="onSelect(hero)" >
+    <span class="badge">{{hero.id}}</span>index={{i}} first={{f}} last={{l}} even={{e}} odd={{o}} {{hero.name}}
   </li>
 </ul>
 <!--
@@ -12,20 +16,6 @@
   つまりhero === selectedHeroがtrueの時、class="selected"と反映される
   詳細:https://angular.io/docs/ts/latest/guide/template-syntax.html#!#class-binding
   -->
-
-
-<p [class]="hoge1" [class]="hoge2">
-  ここのエリアはhoge2変数でcsssのクラス{{hoge2}}を定義している
-</p>
-
-hoge2変数でcssバインド:<input [(ngModel)]="hoge2" placeholder="selected" />←cssでクラスで定義されているクラス名を入力すれば色が変わる（例：selected)
-<!--
-  [class]="hoge1"、[class]="hoge2"について
-  [class]="バインド変数名"で動的にclassを変更することも可能
-  複数[class]を宣言しても採用されるのは最後に宣言したもののみだった。この場合、[class]="hoge2"のみ有効
- -->
-
-
 
 <!-- ngIfが無いとselectedHero.nameプロパティが存在せずにエラーになる
      クリックしていない→selectedHeroの内容が未確定が原因
@@ -52,6 +42,8 @@ View_AppComponent_0 @ AppComponent.html:5
 
 これ以降はzone.js周りが道連れでエラーを吐いているが一番はじめにでるエラーだけ見て判断出来るかもしれない
  -->
+<button (click)='onObjectTest()'>onObjectTest</button>
+
 <div *ngIf="selectedHero">
   <h2>{{selectedHero.name}} 詳細!</h2>
   <div><label>id: </label>{{selectedHero.id}}</div>
@@ -60,3 +52,51 @@ View_AppComponent_0 @ AppComponent.html:5
     <input [(ngModel)]="selectedHero.name" placeholder="name" />
   </div>
 </div>
+
+<p [class]="cssClassCheck" [class.stylecss-oblique]="isChecked">
+  [class]="cssClassCheck" [class.stylecss-oblique]="isChecked"
+</p>
+
+<p class="myRed" [class.myPink]="isChecked">
+  class="myRed" [class.myPink]="isChecked"
+</p>
+<p class="myRed">
+  class="myRed"
+</p>
+<p class="myRed" [class]="cssClassCheck" [class]="isChecked">
+  class="myRed" [class]="cssClassCheck" ←HTMLのclassが無効化される
+</p>
+<input type="checkbox" (change)="onChange($event)" value="this values"> check:赤く・ピンクに、nocheck:なし
+<hr>
+<p [class]="cssClass1">
+  ここのエリアはcssClass1変数でcsssのクラス「{{cssClass1}}」が反映している
+</p>
+
+<p [class]="cssClass2">
+  ここのエリアはcssClass2変数でcsssのクラス「{{cssClass2}}」が反映している
+</p>
+
+<hr>
+<!--<p [class]="cssClass1 cssClass2"> ←エラーになる
+</p-->
+ngClassの使い方がよくわからない<br>
+<p [ngClass]="{'myRed' : true}"> エラーにならない
+</p>
+<hr>
+<p [class]="cssClass1" [class]="cssClass2">
+  ここのエリアはcssClass1、cssClass2変数を宣言しているが、最後に宣言したcssClass2のみが有効でcsssのクラス「{{cssClass2}}」が反映している
+</p>
+
+cssClass2変数でcssバインド:<input [(ngModel)]="cssClass2" placeholder="selected" />←cssでクラスで定義されているクラス名を入力すれば色が変わる（例：selected)
+<!--
+  [class]="hoge1"、[class]="hoge2"について
+  [class]="バインド変数名"で動的にclassを変更することも可能
+  複数[class]を宣言しても採用されるのは最後に宣言したもののみだった。この場合、[class]="hoge2"のみ有効
+ -->
+ <hr>
+
+<p [class]="cssClass3">
+  ここのエリアはcssClass3変数でcsssのクラス「{{cssClass3}}」を定義している
+</p>
+
+
