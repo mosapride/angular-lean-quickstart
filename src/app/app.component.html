@@ -1,8 +1,7 @@
 <h2>外国人が選んだ、最強の日本アニメヒーローベスト15</h2>
 <!-- http://karapaia.com/archives/52205034.html -->
-
 <ul class="heroes">
-  <li *ngFor="let hero of heros ; let i = index ; let f = first ; let l = last ; let e = even ; let o = odd "
+  <li *ngFor="let hero of heroes ; let i = index ; let f = first ; let l = last ; let e = even ; let o = odd "
   [class.myRed]="hero === selectedHero"
   [class.selected]="hero === selectedHero"
   [class.stylecss-oblique]="hero === selectedHero"
@@ -10,6 +9,7 @@
     <span class="badge">{{hero.id}}</span>index={{i}} first={{f}} last={{l}} even={{e}} odd={{o}} {{hero.name}}
   </li>
 </ul>
+
 <!--
   [class.dummy]と[class.selected]について
   [class.class-name]はtrueのときにclass-nameがclassとして採用される
@@ -42,16 +42,19 @@ View_AppComponent_0 @ AppComponent.html:5
 
 これ以降はzone.js周りが道連れでエラーを吐いているが一番はじめにでるエラーだけ見て判断出来るかもしれない
  -->
-<button (click)='onObjectTest()'>onObjectTest</button>
 
-<div *ngIf="selectedHero">
+
+<app-hero-detail [hero]="selectedHero"></app-hero-detail>
+<!--<div *ngIf="selectedHero">
   <h2>{{selectedHero.name}} 詳細!</h2>
   <div><label>id: </label>{{selectedHero.id}}</div>
   <div>
     <label>name: </label>
     <input [(ngModel)]="selectedHero.name" placeholder="name" />
   </div>
-</div>
+</div>-->
+
+<button (click)='onObjectTest()'>onObjectTest</button>
 
 <p [class]="cssClassCheck" [class.stylecss-oblique]="isChecked">
   [class]="cssClassCheck" [class.stylecss-oblique]="isChecked"
@@ -100,3 +103,7 @@ cssClass2変数でcssバインド:<input [(ngModel)]="cssClass2" placeholder="se
 </p>
 
 
+<hr>
+私の名前は「{{name}}」です。
+<input type='text' [(ngModel)]='wkName' /><button (click)='onClickNameChange(wkName)'>変更</button>
+<!--<input type='text' value='name' [(ngModel)]='wkName' /> ngModelが優先される -->

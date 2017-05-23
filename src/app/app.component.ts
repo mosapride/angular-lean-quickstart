@@ -1,9 +1,8 @@
-import { Component } from '@angular/core';
-
-export class Hero {
-  id: number;
-  name: string;
-}
+import { YourNameService } from './your-name.service';
+import { HeroService } from './hero.service';
+import { Hero } from './hero';
+import { Component, OnInit } from '@angular/core';
+/*
 const HEROES: Hero[] = [
   { id: 11, name: 'ベジータ' },
   { id: 12, name: '緋村剣心' },
@@ -21,23 +20,49 @@ const HEROES: Hero[] = [
   //  { id: 23, name: 'うずまきナルト' },
   //  { id: 24, name: '孫悟空' }
 ];
+*/
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.css'],
+  providers: [HeroService, YourNameService]
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
+
   title = 'ヒーローズツアー';
-  heros = HEROES;
+  heroes: Hero[];
   cssClass1 = 'myRed';
   cssClass2 = 'myPink';
   cssClass3 = 'myRed myPink';
   cssClassCheck: string;
   isChecked = false;
   selectedHero: Hero;
+  name: string;
+  wkName: string;
+  constructor(private HeroService: HeroService, private yourNameService: YourNameService) { };
+
+  ngOnInit(): void {
+    this.getHeoros();
+    this.name = this.yourNameService.getName();
+    this.wkName = this.name;
+  }
+
+  onClickNameChange(wk: string): void {
+    console.log('wk', wk);
+    console.log('this.wkName', this.wkName);
+    console.log('this.name', this.name);
+    this.name = this.wkName;
+    this.yourNameService.setName(this.name);
+  }
   onSelect(hero: Hero): void {
     this.selectedHero = hero;
+  }
+
+  getHeoros(): void {
+    // this.heros = this.HeroService.getHeros();
+    // this.HeroService.getHeros().then(heros => this.heroes = heros);
+    this.HeroService.getHeroseSlowly().then(heros => this.heroes = heros);
   }
 
   onChange(event: any) {
@@ -51,7 +76,7 @@ export class AppComponent {
     } else {
       this.cssClassCheck = '';
     }
-    console.log('checked' , event.target.checked);
+    console.log('checked', event.target.checked);
     console.log('target.value', event.target.value);
     this.isChecked = checked;
   }
